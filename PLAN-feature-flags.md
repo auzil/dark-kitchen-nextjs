@@ -11,7 +11,7 @@ entries. **Default: enabled.** Turning it off is an explicit per-deployment choi
 
 ## Decision
 
-- Build-time env flag `FEATURE_SIGNUP`. Unset / anything else → **on**; `false` / `0` / `off` → off.
+- Env flag `FEATURE_SIGNUP`, set for build and runtime alike. Unset / anything else → **on**; `false` / `0` / `off` → off.
   Env (not `content/site.ts`) because it's a rollout switch per deployment (Vercel Production vs Preview),
   not content. Server-only, no `NEXT_PUBLIC_`: every consumer is a Server Component or the Server Action.
 - The page is prerendered, so changing the flag needs a rebuild/redeploy (same as every other env here).
@@ -22,7 +22,7 @@ entries. **Default: enabled.** Turning it off is an explicit per-deployment choi
 
 ### 1. New `lib/features.ts`
 ```ts
-// Feature flags: build-time switches per deployment (env), all on unless set to false/0/off.
+// Feature flags: switches per deployment (env, set for build and runtime), all on unless set to false/0/off.
 // A flag also names the placeholder paths it owns, so a switched-off feature doesn't block the build.
 const FLAGS = {
   signup: { env: "FEATURE_SIGNUP", placeholders: ["site.gift", "media.gift"] },

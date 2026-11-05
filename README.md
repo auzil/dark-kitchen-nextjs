@@ -26,7 +26,7 @@ Root directory `clients/dark-kitchen/site`, framework Next.js, Node 20+. Env var
 |---|---|---|---|
 | `SITE_URL` | `https://<domain>.cz` (domain TODO) | the preview URL | canonical, hreflang, OG, sitemap, JSON-LD. Required. |
 | `NEWSLETTER_PROVIDER` | `brevo` or `ecomail` once implemented | `log` | sign-up delivery (`lib/delivery/newsletter.ts`) |
-| `FEATURE_SIGNUP` | `false` to launch without sign-up | unset (on) | build-time switch (`lib/features.ts`); `false`/`0`/`off` hides the section, its links and the gift line, and the action refuses |
+| `FEATURE_SIGNUP` | `false` to launch without sign-up | unset (on) | switch, set for build and runtime, changing it needs a redeploy (`lib/features.ts`); `false`/`0`/`off` hides the section, its links and the gift line, and the action refuses |
 | `BREVO_API_KEY` / `ECOMAIL_API_KEY` | when chosen | — | server only |
 | `ALLOW_PLACEHOLDERS` | never | `true` | lets sample content through the build, shows the badge, noindex |
 | `NEXT_PUBLIC_ANALYTICS_DOMAIN` | the domain | empty | loads cookieless Plausible |

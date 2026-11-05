@@ -22,8 +22,8 @@ import { ButtonLink } from "@/components/ui/Button/Button";
 import { WordmarkSymbol } from "@/components/ui/Wordmark/Wordmark";
 import { site } from "@/content/site";
 import { routing } from "@/i18n/routing";
-import { features } from "@/lib/features";
 import { getAppLinks } from "@/lib/app-links";
+import { features } from "@/lib/features";
 import { getStatusInput } from "@/lib/status-input";
 
 export default async function Page({ params }: PageProps<"/[locale]">) {
