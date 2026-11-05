@@ -1,0 +1,46 @@
+/* button (was .btn, .btn--accent, .btn--fire in css/components.css) */
+@layer components {
+  .root {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    min-height: var(--btn-h);
+    padding: 0 1.75rem;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color var(--motion-fast), color var(--motion-fast);
+
+    &:hover {
+      background: var(--color-fire);
+      color: var(--color-ink);
+    }
+
+    &[data-variant="accent"] {
+      background: var(--accent);
+      color: var(--accent-ink);
+
+      &:hover {
+        background: var(--color-paper);
+        color: var(--color-ink);
+      }
+    }
+
+    &[data-variant="fire"] {
+      background: var(--color-fire);
+      color: var(--color-ink);
+
+      &:hover {
+        background: var(--color-paper);
+      }
+    }
+  }
+}

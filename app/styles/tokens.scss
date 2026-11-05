@@ -1,0 +1,99 @@
+/*
+  Design tokens, unchanged from the prototype's <style id="tokens"> (DESIGN.md).
+  In the prototype this block was unlayered; here it sits in @layer base. No layered rule sets these
+  custom properties, so the cascade is the same. Font tokens point at the next/font variables (lib/fonts.ts).
+  Breakpoints: app/styles/_breakpoints.scss (tablet 48rem, desktop 64rem).
+*/
+@use "@/app/styles/breakpoints" as bp;
+
+@layer base {
+  :root {
+    /* colour: one warm brown-black base, two accent pairs (pizza / sushi) */
+    --color-ink: #1A120D;
+    --color-ink-2: #261A12;
+    --color-ink-3: #34241A;
+    --color-paper: #FFF3E6;
+    --color-muted: #CDBEAF;
+    --color-line: #FFF3E629;
+    --color-tint: #FFF3E614;
+    --color-tint-2: #FFF3E61F;
+    --color-tomato: #D42E18;
+    --color-fire: #FF7A1F;
+    --color-salmon: #FF8F6E;
+    --color-matcha: #9CBF5A;
+
+    /* type */
+    --font-display: var(--font-display-face), "Arial Narrow", sans-serif;
+    --font-sans: var(--font-sans-face), system-ui, sans-serif;
+    --text-display: clamp(2.75rem, 12.5vw, 7.5rem);
+    --text-display--line-height: .9;
+    --text-display--letter-spacing: 0em;
+    --text-display--font-weight: 900;
+    --text-h2: clamp(4.75rem, 30vw, 9.5rem);
+    --text-h2--line-height: .82;
+    --text-h2--letter-spacing: -.01em;
+    --text-h2--font-weight: 900;
+    --text-h3: clamp(1.375rem, 1.7vw, 1.75rem);
+    --text-h3--line-height: 1;
+    --text-h3--letter-spacing: 0em;
+    --text-h3--font-weight: 800;
+    --text-body-lg: clamp(1.125rem, 1.3vw, 1.375rem);
+    --text-body-lg--line-height: 1.35;
+    --text-body: 1.0625rem;
+    --text-body--line-height: 1.5;
+    --text-fine: .9375rem;
+
+    /* scale knobs for the edit panel */
+    --display-scale: 1;
+    --heading-scale: 1;
+    --body-scale: 1;
+
+    /* layout */
+    --gutter: clamp(1rem, 3.5vw, 3rem);
+    --container-page: 90rem;
+    --container-content: 36rem;
+    --header-h: 3.5rem;
+    --gap-columns: clamp(2.5rem, 5vw, 5rem);
+    --tap: 2.75rem;
+    --btn-h: 3rem;
+    --radius-pill: 999px;
+    --radius-card: 1.25rem;
+    --radius-chip: .75rem;
+    --radius-sheet: 1.5rem;
+
+    /* spacing */
+    --space-2: 1rem;
+    --space-3: 1.5rem;
+    --space-4: 2.5rem;
+    --space-5: 4rem;
+    --space-section: clamp(3.5rem, 6.25vw, 5.75rem);
+
+    /* motion (CSS side; JS tokens live in js/motion.js) */
+    --motion-fast: .3s;
+    --motion-bar: .35s;
+    --motion-base: .45s;
+    --motion-menu: .5s;
+    --motion-pan: .9s;
+    --motion-wipe: 1s;
+    --ease-out-expo: cubic-bezier(.16, 1, .3, 1);
+    --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+
+    @include bp.from(desktop) {
+      --header-h: 4.5rem;
+      --text-fine: 1rem;
+    }
+  }
+
+  /* cuisine accent: <body> follows the page context; menu sections, hero, chooser and app links carry their own */
+  [data-cuisine="pizza"] {
+    --accent: var(--color-tomato);
+    --accent-ink: var(--color-paper);
+    --accent-word: var(--color-fire);
+  }
+
+  [data-cuisine="sushi"] {
+    --accent: var(--color-salmon);
+    --accent-ink: var(--color-ink);
+    --accent-word: var(--color-salmon);
+  }
+}

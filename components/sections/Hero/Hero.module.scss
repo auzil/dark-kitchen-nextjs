@@ -1,0 +1,243 @@
+/* hero + facts band (was .hero*, .facts* in css/sections.css) */
+@use "@/app/styles/breakpoints" as bp;
+
+@layer sections {
+  /*
+    Mobile: the photo fills the space above the text stack (HeroRoot measures the stack into --stack-h),
+    capped at the food band of the image. The food then sits right on top of the copy on any phone height;
+    on tall phones the facts band moves up into the fold instead.
+  */
+  .root {
+    --photo-h: max(13rem, min(calc(100svh - var(--stack-h, 26rem) + 2.5rem), 82vw));
+    position: relative;
+    overflow: hidden;
+
+    @include bp.from(tablet) {
+      display: grid;
+      grid-template-rows: 1fr auto;
+      min-height: 100svh;
+    }
+  }
+
+  .media {
+    position: absolute;
+    inset: 0 0 auto;
+    height: var(--photo-h);
+    overflow: hidden;
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 4.5rem), transparent);
+
+    /* darkens the top edge under the header */
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, color-mix(in srgb, var(--color-ink) 75%, transparent) 0%, transparent 14%);
+      pointer-events: none;
+
+      /* left: darkens behind the headline; top/bottom: under the header and above the facts band */
+      @include bp.from(tablet) {
+        background:
+          linear-gradient(90deg, color-mix(in srgb, var(--color-ink) 90%, transparent) 0%, color-mix(in srgb, var(--color-ink) 68%, transparent) 38%, transparent 62%),
+          linear-gradient(to bottom, color-mix(in srgb, var(--color-ink) 70%, transparent) 0%, transparent 18%, transparent 70%, color-mix(in srgb, var(--color-ink) 85%, transparent) 100%);
+      }
+    }
+
+    @include bp.from(tablet) {
+      inset: 0;
+      height: auto;
+      min-height: 0;
+      mask-image: none;
+    }
+  }
+
+  /*
+    The switch moves the photo's focus to the chosen dish. The hero is zoomed from first paint
+    ([data-picked] in the HTML); only a tap animates the move ([data-live], set by HeroRoot).
+  */
+  .pan {
+    width: 100%;
+    height: 100%;
+    translate: var(--tx, 0) 0;
+    transform: scale(var(--zoom, 1));
+    transform-origin: var(--focus, 50% 50%);
+  }
+
+  .root[data-live] .pan {
+    transition:
+      transform var(--motion-pan) var(--ease-out-expo),
+      translate var(--motion-pan) var(--ease-out-expo),
+      transform-origin var(--motion-pan) var(--ease-out-expo);
+  }
+
+  .pan img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 32%;
+
+    /* keeps the sushi tray in frame while moving the pizza off the headline */
+    @include bp.from(tablet) {
+      object-position: 60% 50%;
+    }
+  }
+
+  .root[data-picked] {
+    --zoom: 1.22;
+
+    &[data-cuisine="pizza"] {
+      --focus: 30% 52%;
+
+      @include bp.from(tablet) {
+        --focus: 52% 44%;
+        --zoom: 1.14;
+        --tx: 7%;
+      }
+    }
+
+    &[data-cuisine="sushi"] {
+      --focus: 80% 52%;
+
+      @include bp.from(tablet) {
+        --focus: 86% 52%;
+      }
+    }
+  }
+
+  .main {
+    position: relative;
+    padding-top: calc(var(--photo-h) - 2.5rem);
+
+    @include bp.from(tablet) {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-top: var(--header-h);
+      padding-bottom: var(--space-4);
+    }
+  }
+
+  .body {
+    display: grid;
+    justify-items: start;
+    gap: .875rem;
+    padding-bottom: 1.25rem;
+
+    @include bp.from(tablet) {
+      gap: 1rem;
+      padding-bottom: 0;
+    }
+  }
+
+  /* the switch and the app links span the stack (was .hero__body > .cuisine-switch / > .app-links) */
+  .fill {
+    width: 100%;
+  }
+
+  .title {
+    margin-top: .125rem;
+    text-transform: uppercase;
+
+    @include bp.from(tablet) {
+      margin-block: .25rem .125rem;
+    }
+  }
+
+  .delivery {
+    max-width: 30rem;
+    color: var(--color-paper);
+  }
+
+  .order {
+    margin-bottom: -.375rem;
+    color: var(--accent-word);
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 900;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .pickup {
+    font-weight: 700;
+  }
+
+  .pickup a {
+    text-decoration: underline;
+  }
+
+  .prices {
+    margin-top: -.5rem;
+
+    /* the facts band carries the prices line on desktop */
+    @include bp.from(tablet) {
+      display: none;
+    }
+  }
+
+  .hint {
+    font-size: var(--text-fine);
+    color: var(--color-muted);
+  }
+
+  .factsBand {
+    @include bp.from(tablet) {
+      position: relative;
+      background: color-mix(in srgb, var(--color-ink-2) 90%, transparent);
+      box-shadow: inset 0 1px var(--color-line);
+    }
+  }
+
+  /* facts: 2 columns on mobile (an odd last one spans the row), one row on desktop */
+  .facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--space-2);
+
+    @include bp.from(tablet) {
+      grid-auto-flow: column;
+      grid-auto-columns: 1fr;
+      column-gap: var(--space-4);
+    }
+  }
+
+  .facts li {
+    padding: 1rem 0 1.125rem;
+    border-top: 1px solid var(--color-line);
+
+    @include bp.from(tablet) {
+      padding: 1.25rem 0 1.5rem;
+      border-top: 0;
+    }
+  }
+
+  .facts li:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+
+    @include bp.from(tablet) {
+      grid-column: auto;
+    }
+  }
+
+  .factTitle {
+    margin-bottom: .375rem;
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 900;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .factTitle a {
+    text-decoration: none;
+
+    &:hover {
+      color: var(--color-fire);
+    }
+  }
+
+  .factText {
+    font-size: var(--text-fine);
+    line-height: 1.35;
+    color: var(--color-muted);
+  }
+}

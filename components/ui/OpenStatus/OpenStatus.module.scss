@@ -1,0 +1,23 @@
+/* open-now status (was .status) */
+@layer components {
+  .root {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .dot {
+    flex: none;
+    width: .625rem;
+    height: .625rem;
+    border-radius: 50%;
+    background: var(--color-matcha);
+  }
+
+  .root[data-open="false"] .dot {
+    background: var(--color-tomato);
+  }
+}

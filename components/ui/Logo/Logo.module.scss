@@ -1,0 +1,24 @@
+/* logo link in the header and the mobile menu (was .logo) */
+@use "@/app/styles/breakpoints" as bp;
+
+@layer components {
+  .root {
+    display: block;
+    color: var(--color-paper);
+    line-height: 0;
+    text-decoration: none;
+  }
+
+  .mark {
+    width: 7.5rem;
+
+    @include bp.from(desktop) {
+      width: 9rem;
+    }
+  }
+
+  /* smaller in the mobile menu (was .mobile-menu .logo .wordmark) */
+  .root[data-size="menu"] .mark {
+    width: 6.5rem;
+  }
+}

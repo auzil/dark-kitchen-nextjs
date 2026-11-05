@@ -1,0 +1,36 @@
+/* sign-up form (was .signup__form, .signup__fields, .signup__success in css/sections.css) */
+@layer sections {
+  .root {
+    display: grid;
+    gap: var(--space-2);
+    max-width: 36rem;
+    margin-top: var(--space-4);
+  }
+
+  .fields {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  /* was .signup__fields > .btn */
+  .submit {
+    justify-self: start;
+    min-width: 14rem;
+  }
+
+  .success {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  /* spam trap: off screen, never focusable or announced */
+  .trap {
+    position: absolute;
+    left: -100vw;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+}

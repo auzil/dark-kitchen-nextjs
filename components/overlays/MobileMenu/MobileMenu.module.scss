@@ -1,0 +1,47 @@
+/* mobile menu, full screen (was .mobile-menu* in css/overlays.css; its entrance from css/motion.css) */
+@layer overlays {
+  .root {
+    padding: 0 var(--gutter) var(--space-4);
+    overflow: auto;
+    background: var(--color-ink-2);
+  }
+
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-h);
+  }
+
+  .links {
+    margin: var(--space-4) 0;
+  }
+
+  .links a {
+    display: block;
+    padding: .125rem 0;
+    font-family: var(--font-display);
+    font-size: clamp(3.25rem, 17vw, 6rem);
+    font-weight: 900;
+    line-height: .95;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .langs {
+    gap: .5rem;
+    margin: var(--space-3) 0 0;
+  }
+}
+
+@layer motion {
+  /* :global(.motion-ok) = the html class set before paint when motion is allowed (app/[locale]/layout.tsx) */
+  :global(.motion-ok) .root[open] {
+    animation: wipe-down var(--motion-menu) var(--ease-in-out) both;
+  }
+
+  @keyframes wipe-down {
+    from { clip-path: inset(0 0 100% 0); }
+    to { clip-path: inset(0); }
+  }
+}

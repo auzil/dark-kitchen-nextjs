@@ -1,0 +1,45 @@
+/* app links: Wolt / foodora / Bolt Food for one cuisine (was .app-links, .app-link) */
+@layer components {
+  .root {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .375rem;
+    max-width: 34rem;
+
+    &[data-variant="stack"] {
+      grid-template-columns: 1fr;
+      gap: .5rem;
+      max-width: none;
+    }
+  }
+
+  .link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--btn-h);
+    padding: 0 .5rem;
+    border-radius: var(--radius-pill);
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-family: var(--font-sans);
+    font-size: 1.1875rem;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background-color var(--motion-fast), color var(--motion-fast);
+
+    &:hover {
+      background: var(--color-paper);
+      color: var(--color-ink);
+    }
+  }
+
+  /* the stack is used only in the chooser, where its tiles have card corners (was .chooser .app-links--stack .app-link) */
+  .root[data-variant="stack"] .link {
+    min-height: 3.5rem;
+    border-radius: var(--radius-card);
+    font-size: 1.25rem;
+  }
+}

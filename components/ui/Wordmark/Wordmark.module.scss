@@ -1,0 +1,11 @@
+/* wordmark (inline SVG lockup, <use href="#wordmark">) */
+@layer components {
+  .root {
+    display: block;
+    height: auto;
+    overflow: visible;
+    fill: currentColor;
+    font-family: var(--font-wordmark-face), "Times New Roman", serif;
+    font-weight: 400;
+  }
+}

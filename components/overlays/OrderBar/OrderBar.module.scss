@@ -1,0 +1,41 @@
+/* sticky order bar, mobile only (was .order-bar* in css/overlays.css) */
+/* Slides in once the hero app buttons leave the screen (OrderBar); off-screen it is inert. */
+@use "@/app/styles/breakpoints" as bp;
+
+@layer overlays {
+  .root {
+    position: fixed;
+    right: .75rem;
+    bottom: calc(.75rem + env(safe-area-inset-bottom));
+    left: .75rem;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .5rem .5rem .5rem 1.25rem;
+    background: var(--color-ink-3);
+    box-shadow: 0 .5rem 1.5rem #0006;
+    transform: translateY(110%);
+    transition: transform var(--motion-bar) ease;
+
+    /* was .is-visible */
+    &[data-visible] {
+      transform: none;
+    }
+
+    @include bp.from(desktop) {
+      display: none;
+    }
+  }
+
+  .status {
+    flex: 1;
+    min-width: 0;
+    font-size: .9375rem;
+  }
+
+  .button {
+    min-height: 3rem;
+    padding: 0 1.5rem;
+  }
+}

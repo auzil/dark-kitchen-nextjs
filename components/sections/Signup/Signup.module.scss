@@ -1,0 +1,46 @@
+/* sign-up section (was .signup* in css/sections.css; the form's own rules are in SignupForm.module.scss) */
+@use "@/app/styles/breakpoints" as bp;
+
+@layer sections {
+  .root {
+    padding-block: var(--space-section);
+    background: var(--color-ink-2);
+  }
+
+  .inner {
+    display: grid;
+    align-items: center;
+    gap: var(--space-4);
+
+    @include bp.from(desktop) {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      column-gap: var(--gap-columns);
+    }
+  }
+
+  .photo {
+    aspect-ratio: 2 / 1;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+
+    @include bp.from(desktop) {
+      aspect-ratio: 3 / 2;
+    }
+  }
+
+  .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+  }
+
+  .word {
+    text-transform: uppercase;
+  }
+
+  .lead {
+    max-width: 32rem;
+    margin-top: var(--space-2);
+  }
+}

@@ -1,0 +1,77 @@
+/* drawn street plan (inline SVG, placeholder until a real map) — was .map* in css/sections.css */
+@layer sections {
+  .root {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    background: var(--color-ink-2);
+  }
+
+  .root svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .block {
+    fill: var(--color-ink-3);
+  }
+
+  .park {
+    fill: var(--color-matcha);
+    opacity: .2;
+  }
+
+  .street,
+  .mainRoad {
+    fill: none;
+    stroke: var(--color-ink);
+    stroke-width: 16;
+  }
+
+  .mainRoad {
+    stroke-width: 36;
+  }
+
+  .tram {
+    fill: none;
+    stroke: var(--color-muted);
+    stroke-width: 2;
+    stroke-dasharray: 10 9;
+    opacity: .55;
+  }
+
+  .label {
+    fill: var(--color-muted);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  .pin {
+    fill: var(--color-tomato);
+  }
+
+  .halo {
+    fill: var(--color-tomato);
+    opacity: .22;
+  }
+
+  .tag {
+    fill: var(--color-paper);
+  }
+
+  .tagTitle {
+    fill: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .tagText {
+    fill: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    font-weight: 600;
+  }
+}

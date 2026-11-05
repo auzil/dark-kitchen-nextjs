@@ -1,0 +1,73 @@
+/* footer (was .footer* in css/sections.css) */
+/* bottom padding leaves room for the mobile order bar */
+@use "@/app/styles/breakpoints" as bp;
+
+@layer sections {
+  .root {
+    padding-block: var(--space-5) calc(var(--space-4) + 4.5rem);
+
+    @include bp.from(desktop) {
+      padding-bottom: var(--space-4);
+    }
+  }
+
+  .brand {
+    display: block;
+    width: 9rem;
+    margin-bottom: var(--space-4);
+    color: var(--color-paper);
+    line-height: 0;
+    text-decoration: none;
+  }
+
+  /* was .footer__brand .wordmark */
+  .brandMark {
+    width: 100%;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+
+    @include bp.from(desktop) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .grid h2 {
+    margin-bottom: .5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-muted);
+  }
+
+  .grid ul {
+    display: grid;
+    gap: .25rem;
+  }
+
+  .grid a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .company {
+    grid-column: 1 / -1;
+
+    @include bp.from(desktop) {
+      grid-column: auto;
+    }
+  }
+
+  .privacy {
+    margin-top: .5rem;
+  }
+
+  .langs {
+    margin: -.25rem 0 0 -.5rem;
+  }
+}

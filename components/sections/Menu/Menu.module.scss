@@ -1,0 +1,95 @@
+/* menu sections, pizza / sushi (was .menu* in css/sections.css) */
+/* Mobile: word, line, dish grid, then the order buttons. Desktop: a sticky side panel next to the grid. */
+@use "@/app/styles/breakpoints" as bp;
+
+@layer sections {
+  .root {
+    padding-block: var(--space-section) calc(var(--space-section) * .75);
+
+    & + & {
+      padding-top: calc(var(--space-section) * .5);
+    }
+  }
+
+  .inner {
+    display: grid;
+    grid-template-areas: "word" "line" "grid" "order";
+    row-gap: var(--space-3);
+
+    @include bp.from(desktop) {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+      grid-template-areas: "panel grid";
+      align-items: start;
+      column-gap: var(--gap-columns);
+    }
+  }
+
+  /* the second section is flipped (MenuRoot sets data-variant; was .menu--flip) */
+  .root[data-variant="flip"] .inner {
+    @include bp.from(desktop) {
+      grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+      grid-template-areas: "grid panel";
+    }
+  }
+
+  .panel {
+    display: contents;
+
+    @include bp.from(desktop) {
+      grid-area: panel;
+      position: sticky;
+      top: calc(var(--header-h) + 2rem);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+  }
+
+  .word {
+    grid-area: word;
+    color: var(--accent-word);
+    text-transform: uppercase;
+  }
+
+  .lead {
+    grid-area: line;
+    max-width: var(--container-content);
+    margin-top: -.25rem;
+    color: var(--color-muted);
+
+    @include bp.from(desktop) {
+      margin-top: 0;
+    }
+  }
+
+  .grid {
+    grid-area: grid;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem .75rem;
+
+    @include bp.from(desktop) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2.75rem 1.25rem;
+    }
+  }
+
+  .order {
+    grid-area: order;
+    display: grid;
+    gap: .75rem;
+    padding-top: var(--space-2);
+
+    @include bp.from(desktop) {
+      padding-top: var(--space-3);
+    }
+  }
+
+  .orderLabel {
+    font-family: var(--font-display);
+    font-size: 1.625rem;
+    font-weight: 900;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+}

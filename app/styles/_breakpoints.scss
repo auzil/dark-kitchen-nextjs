@@ -1,0 +1,42 @@
+// Breakpoints: the one place they're defined (custom properties can't be used in @media).
+// Values come from the source page's CSS — the mixins must emit the exact queries it used, so the
+// compiled output stays identical. Emits no CSS on its own.
+//
+//   @use "@/app/styles/breakpoints" as bp;
+//   .title { font-size: var(--text-h3); @include bp.from(desktop) { font-size: var(--text-h2); } }
+
+@use "sass:map";
+
+// the prototype's breakpoints (css/*.css: 48rem tablet, 64rem desktop)
+$breakpoints: (
+  tablet: 48rem,
+  desktop: 64rem,
+);
+
+@function value($name) {
+  @if not map.has-key($breakpoints, $name) {
+    @error "Unknown breakpoint `#{$name}`. Known: #{map.keys($breakpoints)}";
+  }
+  @return map.get($breakpoints, $name);
+}
+
+/// Mobile first: from this breakpoint up.
+@mixin from($name) {
+  @media (min-width: value($name)) {
+    @content;
+  }
+}
+
+/// Below this breakpoint. Emits `max-width: <value> - 0.01rem` (e.g. 47.99rem): use it only where the source
+/// had that exact query (e.g. art-directed images), otherwise prefer from().
+@mixin until($name) {
+  @media (max-width: value($name) - 0.01rem) {
+    @content;
+  }
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}

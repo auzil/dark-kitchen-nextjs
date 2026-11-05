@@ -1,0 +1,32 @@
+/* combo card (was .combo in css/components.css) */
+@layer components {
+  .root {
+    display: grid;
+    align-content: start;
+    gap: .4375rem;
+    scroll-snap-align: start;
+  }
+
+  .photo {
+    aspect-ratio: 3 / 2;
+    margin-bottom: .375rem;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    background: var(--color-ink);
+  }
+
+  .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .name {
+    font-size: calc(var(--text-h3) * 1.35 * var(--heading-scale));
+    text-transform: uppercase;
+  }
+
+  .line {
+    color: var(--color-muted);
+  }
+}

@@ -1,0 +1,67 @@
+/* cuisine switch: pizza / sushi radio pair (was .cuisine-switch) */
+@layer components {
+  .root {
+    display: flex;
+    gap: .5rem;
+    max-width: 34rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .option {
+    --chip: var(--color-tomato);
+    position: relative;
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    min-height: var(--tap);
+    border-radius: var(--radius-pill);
+    /* idle: still reads as a button on top of any photo */
+    background: color-mix(in srgb, var(--chip) 26%, var(--color-ink-3));
+    color: var(--color-paper);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition: color var(--motion-fast), background-color var(--motion-fast);
+
+    &[data-cuisine-option="sushi"] {
+      --chip: var(--color-salmon);
+    }
+
+    &::before {
+      content: "";
+      width: .625rem;
+      height: .625rem;
+      border-radius: 50%;
+      background: var(--chip);
+    }
+  }
+
+  /* the real radio covers the whole option, invisible */
+  .option input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .option:has(input:checked) {
+    background: var(--accent);
+    color: var(--accent-ink);
+
+    &::before {
+      background: currentColor;
+    }
+  }
+
+  .option:has(input:focus-visible) {
+    outline: 2px solid var(--color-fire);
+    outline-offset: 2px;
+  }
+}

@@ -1,0 +1,73 @@
+/* combos (was .combos* in css/sections.css) */
+/* Mobile: a horizontal snap carousel that bleeds to the screen edges. Desktop: three columns. */
+@use "@/app/styles/breakpoints" as bp;
+
+@layer sections {
+  .root {
+    padding-block: var(--space-section);
+    background: var(--color-ink-2);
+  }
+
+  .head {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+
+    @include bp.from(desktop) {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      column-gap: var(--space-4);
+    }
+  }
+
+  /* was .combos__head > .btn */
+  .headButton {
+    @include bp.from(desktop) {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+    }
+  }
+
+  .word {
+    text-transform: uppercase;
+  }
+
+  .lead {
+    max-width: var(--container-content);
+    color: var(--color-muted);
+  }
+
+  .list {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 82%;
+    gap: .75rem;
+    margin: 0 calc(var(--gutter) * -1);
+    padding: 0 var(--gutter);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+
+    @include bp.from(desktop) {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.25rem;
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+    }
+  }
+
+  .office {
+    max-width: 40rem;
+    margin-top: var(--space-4);
+    color: var(--color-muted);
+  }
+
+  .office a {
+    color: var(--color-paper);
+    white-space: nowrap;
+  }
+}

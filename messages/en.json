@@ -1,0 +1,149 @@
+{
+  "meta": {
+    "title": "Pizza and sushi delivery, Prague 4 | Imperial Food",
+    "description": "Pizza and sushi delivered from Chodov. Order on Wolt, foodora or Bolt Food, or pick it up.",
+    "previewBadge": "Preview — not final"
+  },
+  "skipLink": "Skip to content",
+  "nav": {
+    "pizza": "Pizza",
+    "sushi": "Sushi",
+    "combos": "Combos",
+    "pickup": "Pickup",
+    "gift": "Gift",
+    "menu": "Menu",
+    "close": "Close"
+  },
+  "lang": {
+    "label": "Language"
+  },
+  "status": {
+    "openUntil": "Open until {time}",
+    "opensAt": "Closed, opening at {time}",
+    "opensTomorrow": "Closed, opening tomorrow at {time}"
+  },
+  "switch": {
+    "legend": "What are you craving?",
+    "pizza": "Pizza",
+    "sushi": "Sushi"
+  },
+  "order": {
+    "button": "Order",
+    "prices": "Current prices and the full menu are in the apps.",
+    "appLabel": "Order {cuisine} on {app}",
+    "cuisine": {
+      "pizza": "pizza",
+      "sushi": "sushi"
+    },
+    "heading": {
+      "pizza": "Order pizza",
+      "sushi": "Order sushi"
+    },
+    "prompt": {
+      "pizza": "Order pizza:",
+      "sushi": "Order sushi:"
+    }
+  },
+  "hero": {
+    "title": {
+      "0": "Today’s pick:",
+      "1": "pizza or sushi?"
+    },
+    "photoAlt": "Pizza in an open box and a sushi set on a kitchen counter",
+    "pickup": "Pickup: {address}",
+    "inAppHint": "App didn't open? Open this page in your browser from the menu at the top right."
+  },
+  "facts": {
+    "delivery": {
+      "title": "Delivery",
+      "text": "{areaShort}. Brought to you by Wolt, foodora or Bolt Food."
+    },
+    "pickup": {
+      "title": "Pickup",
+      "text": "Daily {hours}. Choose pickup in the app."
+    },
+    "gift": {
+      "title": "Gift",
+      "text": "Leave your e-mail, get a free roll or drink at pickup."
+    },
+    "prices": {
+      "title": "Prices"
+    }
+  },
+  "pizza": {
+    "title": {
+      "0": "Pizza"
+    },
+    "line": "A few from the menu. Our pizzas are 32 cm."
+  },
+  "sushi": {
+    "title": {
+      "0": "Sushi"
+    },
+    "line": "Rolls and sets from the menu, pieces listed on each."
+  },
+  "dish": {
+    "tag": {
+      "spicy": "spicy",
+      "veg": "meat-free"
+    },
+    "unit": {
+      "cm": "cm",
+      "pcs": "pcs"
+    }
+  },
+  "combos": {
+    "title": {
+      "0": "Combos"
+    },
+    "line": "For two, for the crew, for the whole office.",
+    "cta": "Choose an app",
+    "office": "Big order for the office? Call <phone>{phoneNumber}</phone> or write to <email>{emailAddress}</email>."
+  },
+  "pickup": {
+    "title": {
+      "0": "Pick it",
+      "1": "up"
+    },
+    "line": "Order in the app, choose pickup and come by. The e-mail gift is only handed out here.",
+    "lineNoGift": "Order in the app, choose pickup and come by.",
+    "address": "Address",
+    "hours": "Open",
+    "days": "Mon–Sun",
+    "door": "Finding the door",
+    "maps": "Open in Google Maps",
+    "mapAlt": "Street plan around the pickup hatch",
+    "doorPhotoAlt": "Entrance of the Imperial Food shop: black sign above a glass door"
+  },
+  "signup": {
+    "title": {
+      "0": "A free roll",
+      "1": "or drink"
+    },
+    "line": "Leave your e-mail and we send you a code. Show it at pickup and get a roll or a drink.",
+    "photoAlt": "Rolls and lemonade on the pickup hatch counter",
+    "emailLabel": "Your e-mail",
+    "emailPlaceholder": "name@email.com",
+    "consent": "Send me news and offers by e-mail, 1–2 times a month. I can unsubscribe any time.",
+    "privacyLink": "How we protect your data",
+    "submit": "Send me the code",
+    "terms": "One code per person, valid at pickup only.",
+    "errors": {
+      "email": "Check your e-mail, something's missing.",
+      "consent": "We can't send the code without your consent. Tick the box.",
+      "server": "That didn’t go through. Please try again in a moment."
+    },
+    "done": "Done. Confirm the link in the e-mail we just sent, and the code arrives right after."
+  },
+  "footer": {
+    "office": "Office orders",
+    "follow": "Follow us",
+    "company": "Operator",
+    "companyId": "Company ID {ico}",
+    "privacy": "Privacy policy"
+  },
+  "chooser": {
+    "title": "Where do you order?",
+    "sub": "Opens our listing in the app."
+  }
+}

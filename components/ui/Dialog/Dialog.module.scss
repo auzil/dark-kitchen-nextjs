@@ -1,0 +1,22 @@
+/*
+  Dialog reset: drop the UA box, each dialog styles itself (was `dialog` / `dialog::backdrop` in css/overlays.css).
+  In @layer components on purpose: the element rule had the lowest specificity in the prototype, so the dialogs'
+  own rules (@layer overlays) must always win over it, whatever chunk loads first.
+*/
+@layer components {
+  .root {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+
+    &::backdrop {
+      background: none;
+    }
+  }
+}
