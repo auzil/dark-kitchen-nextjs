@@ -26,6 +26,9 @@ export function DialogButton({ dialog, openerKey, mode, variant, haspopup = true
     "aria-expanded": open === dialog && opener === openerKey,
     "data-dialog-open": dialog,
     "data-chooser": mode,
+    // tracked by TrackClicks as chooser_open { opener }
+    "data-track-event": dialog === "chooser" ? "chooser_open" : undefined,
+    "data-track-opener": dialog === "chooser" ? openerKey : undefined,
     onClick: (event: MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
       openDialog(dialog, { key: openerKey, element: event.currentTarget, mode });

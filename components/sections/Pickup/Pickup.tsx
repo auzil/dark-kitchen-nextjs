@@ -46,7 +46,7 @@ export async function Pickup({ locale }: { locale: Locale }) {
               <dd data-sample="true">{f.door}</dd>
             </div>
           </dl>
-          <ButtonLink className={styles.maps} href={links.maps}>
+          <ButtonLink className={styles.maps} href={links.maps} data-track-event="directions_tap" data-track-section="pickup">
             {t("maps")}
           </ButtonLink>
         </div>

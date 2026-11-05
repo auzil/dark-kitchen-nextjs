@@ -67,6 +67,21 @@
     margin-top: .5rem;
   }
 
+  /* a button that reads as the footer's links */
+  .cookies {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   .langs {
     margin: -.25rem 0 0 -.5rem;
   }

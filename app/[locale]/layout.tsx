@@ -1,5 +1,5 @@
 // Root layout (there is no app/layout.tsx): <html lang>, fonts, global CSS, metadata, the guards and the
-// page-wide behaviours (anchor scroll, app-tap tracking, analytics script).
+// page-wide behaviours (anchor scroll, click tracking, GA4 + consent banner).
 // Global CSS order matters only here: base.scss declares the @layer order and must come first.
 import "../styles/base.scss";
 import "../styles/tokens.scss";
@@ -7,9 +7,9 @@ import "../styles/motion.scss";
 
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import Script from "next/script";
 import { hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
+import { Analytics } from "@/components/analytics/Analytics";
 import { TrackClicks } from "@/components/analytics/TrackClicks";
 import { AnchorScroll } from "@/components/page/AnchorScroll";
 import { InlineScript } from "@/components/ui/InlineScript/InlineScript";
@@ -22,8 +22,6 @@ import { fontVariables } from "@/lib/fonts";
 import { allowPlaceholders, assertNoPlaceholders, findPlaceholders } from "@/lib/placeholders";
 import { REQUIRED_ENV, settingPlaceholders } from "@/lib/required-env";
 import { localePath, SITE_URL } from "@/lib/site-url";
-
-const ANALYTICS_DOMAIN = process.env.NEXT_PUBLIC_ANALYTICS_DOMAIN;
 
 // Motion start states (app/styles/motion.scss) apply only under html.motion-ok. Set before paint so nothing
 // flashes, never under reduced motion; if the motion code never boots (JS failed), the failsafe removes it
@@ -86,7 +84,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         {children}
         <AnchorScroll />
         <TrackClicks lang={locale} />
-        {ANALYTICS_DOMAIN && <Script defer data-domain={ANALYTICS_DOMAIN} src="https://plausible.io/js/script.js" />}
+        <Analytics locale={locale} />
         {allowPlaceholders && placeholders.length > 0 && <PreviewBadge label={t("previewBadge")} count={placeholders.length} />}
       </body>
     </html>

@@ -29,7 +29,7 @@ Root directory `clients/dark-kitchen/site`, framework Next.js, Node 20+. Env var
 | `FEATURE_SIGNUP` | `false` to launch without sign-up | unset (on) | switch, set for build and runtime, changing it needs a redeploy (`lib/features.ts`); `false`/`0`/`off` hides the section, its links and the gift line, and the action refuses |
 | `BREVO_API_KEY` / `ECOMAIL_API_KEY` | when chosen | — | server only |
 | `ALLOW_PLACEHOLDERS` | never | `true` | lets sample content through the build, shows the badge, noindex |
-| `NEXT_PUBLIC_ANALYTICS_DOMAIN` | the domain | empty | loads cookieless Plausible |
+| `NEXT_PUBLIC_GA_ID` | the GA4 `G-…` ID. Required (build guard). | empty | GA4 measurement ID; gtag.js loads only after the visitor accepts the consent banner. Inlined at build time. Unset: no banner, no analytics |
 
 See `.env.example`. The sign-up rate limit is in memory (one Node instance); on serverless use a KV store.
 
@@ -37,7 +37,7 @@ See `.env.example`. The sign-up rate limit is in memory (one Node instance); on 
 
 | File | Owns |
 |---|---|
-| `app/[locale]/layout.tsx` | root layout: `<html lang>`, fonts, global styles, metadata (title, description, canonical, hreflang, OG), viewport/theme colour, motion-class inline script, placeholder guard + badge, AnchorScroll, TrackClicks, Plausible |
+| `app/[locale]/layout.tsx` | root layout: `<html lang>`, fonts, global styles, metadata (title, description, canonical, hreflang, OG), viewport/theme colour, motion-class inline script, placeholder guard + badge, AnchorScroll, TrackClicks, Analytics (GA4 stub + consent banner) |
 | `app/[locale]/page.tsx` | composes the page: skip link, header, sections in prototype order, footer, dialogs, order bar, JSON-LD; wraps them in the two providers |
 | `app/[locale]/opengraph-image.jpg` | 1200×630 share image (the export's `og.jpg`, AI photo: temp) |
 | `app/actions/signup.ts` | Server Action: spam checks (honeypot, min fill time, per-IP rate limit), zod, delivery |
@@ -52,7 +52,9 @@ See `.env.example`. The sign-up rate limit is in memory (one Node instance); on 
 | `components/cuisine/*` | CuisineProvider (pizza/sushi state), CuisineOrder (chosen cuisine first) |
 | `components/dialogs/*` | DialogProvider (which dialog, chooser preset), DialogButton (openers), PageDialog |
 | `components/motion/*` | RevealLines / useRevealLines, RevealPhoto / useRevealPhoto |
-| `components/page/AnchorScroll.tsx`, `components/analytics/TrackClicks.tsx` | page-wide click delegates |
+| `components/page/AnchorScroll.tsx`, `components/analytics/TrackClicks.tsx` | page-wide click delegates; TrackClicks sends GA4 events from `data-app` / `data-track-event` + `data-track-*` |
+| `components/analytics/Analytics.tsx`, `ConsentBanner.tsx`, `CookieSettings.tsx` | gtag stub with consent denied (inline), the consent banner (our own), the footer "Cookie settings" button |
+| `lib/analytics.ts` | GA4 in one place: consent storage (`localStorage` `consent-analytics`, 12 months), loading gtag.js after consent, landing URL (sessionStorage), `track()` |
 | `content/site.ts`, `content/types.ts`, `content/media.ts` | business data (was `js/data.js`), its types, every image |
 | `messages/{cs,en,ru}.json` | all copy (was `js/messages.js`) |
 | `lib/fields.ts` | values and hrefs from content (was FIELDS / LINKS in `js/i18n.js`) |
@@ -76,7 +78,34 @@ See `.env.example`. The sign-up rate limit is in memory (one Node instance); on 
 | `--stack-h` | HeroRoot (ResizeObserver) | mobile photo height |
 | open-now | OpenStatus (inline script before paint, then useSyncExternalStore, 1 min) | `data-open`, text |
 | sign-up | SignupForm (`useActionState` + client checks) | error texts, `aria-invalid`, success |
-| utm source | TrackClicks (sessionStorage `tr-src`) | analytics props |
+| analytics consent | `lib/analytics.ts` (localStorage `consent-analytics`), ConsentBanner | banner shown/hidden, gtag.js loaded |
+| landing URL + referrer of the visit | `lib/analytics.ts` (sessionStorage `landing`) | GA4 `page_location` / `page_referrer`, so UTMs survive a late consent |
+
+## Analytics (GA4)
+
+Free GA4, basic Consent Mode v2, our own banner. Nothing is requested from Google before the visitor presses Accept; Reject (or no answer) means no `googletagmanager.com` / `google-analytics.com` request and no `_ga` cookie. Only consenting visitors are counted. Links for posts: `../UTM.md`. Try it with `NEXT_PUBLIC_GA_ID=G-… npm run dev` and `/?utm_source=telegram&utm_medium=social&utm_campaign=test&debug` (the console logs every event; DebugView shows them in GA4).
+
+Events (sent by `TrackClicks` from `data-track-*` attributes; params in brackets):
+
+| Event | When | Key event |
+|---|---|---|
+| `app_tap` [app, cuisine, section, lang] | tap on a Wolt / foodora / Bolt link | yes |
+| `generate_lead` [lang] | sign-up succeeded | yes |
+| `directions_tap` [section] | "Google Maps" in Pickup | yes |
+| `contact_tap` [method, section, lang] | phone / e-mail link (footer, combos) | no |
+| `social_tap` [network, lang] | Instagram / TikTok in the footer | no |
+| `chooser_open` [opener, lang] | the app chooser opened (bar, header, combos) | no |
+
+Owner checklist (in the owner's Google account):
+
+- [ ] Create the property: time zone Europe/Prague, currency CZK, a web stream. Copy its `G-…` ID into `NEXT_PUBLIC_GA_ID` on Vercel Production (then redeploy).
+- [ ] Enhanced measurement on. Data retention 14 months. Google signals off.
+- [ ] Event-scoped custom dimensions: `app`, `cuisine`, `section`, `method`, `network`, `lang`.
+- [ ] Mark key events: `app_tap`, `generate_lead`, `directions_tap`.
+- [ ] Custom channel group: Telegram, Instagram, TikTok, Google search, Google profile, QR bag, Direct, Other (rules on source and medium). The QR medium `offline` has no default GA4 channel, so this group is needed.
+- [ ] Saved exploration: rows session source / medium / campaign; values `app_tap` by `app` plus `generate_lead`. It answers which channel and which post produce taps, and in which app.
+- [ ] Link Search Console (free) to see the Google search queries.
+- [ ] After deploying, open DebugView with `?debug` and check every event and the custom dimensions.
 
 ## Placeholders → owner answers
 
@@ -94,10 +123,11 @@ See `.env.example`. The sign-up rate limit is in memory (one Node instance); on 
 | `media.*` (temp) | real photos (#5): hero ×2, 12 dishes, 3 combos, gift, OG image |
 | `env SITE_URL` | domain (.cz) |
 | `env NEWSLETTER_PROVIDER` | e-mail service: Brevo or Ecomail (then implement its adapter) |
+| `env NEXT_PUBLIC_GA_ID` | the GA4 property's measurement ID (TODO-OWNER #16) |
 
 `site.gift`, `media.gift` and `env NEWSLETTER_PROVIDER` only block (and count) while sign-up is on; with `FEATURE_SIGNUP=false` the guard skips them.
 
-Also still placeholders on the page without a flag of their own: the drawn street map (`data-sample`), the privacy link (dead `#privacy` anchor, policy page out of scope), copy proofreading (cs/en/ru, plus the two new strings below).
+Also still placeholders on the page without a flag of their own: the drawn street map (`data-sample`), the privacy link (dead `#privacy` anchor, policy page out of scope; the consent banner links to it too), copy proofreading (cs/en/ru, plus the two new strings below).
 
 ## Differences from the prototype (deliberate)
 

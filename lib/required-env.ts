@@ -2,7 +2,7 @@
 import { PRODUCTION_PROVIDERS } from "@/lib/delivery/newsletter";
 import { features } from "@/lib/features";
 
-export const REQUIRED_ENV = ["SITE_URL"];
+export const REQUIRED_ENV = ["SITE_URL", "NEXT_PUBLIC_GA_ID"];
 
 /** Guard entries for settings that need more than "is set". */
 export function settingPlaceholders(): string[] {

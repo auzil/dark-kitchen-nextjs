@@ -1,57 +1,34 @@
 "use client";
 /*
- * App-tap tracking (was js/analytics.js): every tap on an app link ("App tap" { app, cuisine, section, source,
- * lang }) goes to Plausible if it's loaded (cookieless). source = the visit's first utm_source, kept in
- * sessionStorage. ?debug logs taps to the console. One listener on document; links stay plain server-rendered
- * <a data-app data-cuisine data-track>.
+ * Click tracking for GA4 (see lib/analytics.ts): one listener on document, links stay plain server-rendered <a>.
+ * - a[data-app] (+ data-cuisine, data-track = section) → app_tap { app, cuisine, section, lang }, a key event
+ * - any element with data-track-event="name" → that event, params = its other data-track-* attributes
+ *   (data-track-method="phone" → { method: "phone" }) plus lang. Events: directions_tap, contact_tap, social_tap,
+ *   chooser_open. Sent only after consent; with ?debug they are also logged to the console.
  */
 import { useEffect } from "react";
+import { track } from "@/lib/analytics";
 
-const SOURCE_KEY = "tr-src";
-
-declare global {
-  interface Window {
-    plausible?: (event: string, options?: { props: Record<string, string> }) => void;
+/** Every data-track-* except -event as a param: data-track-method="phone" (dataset.trackMethod) → { method: "phone" } */
+function trackParams(element: HTMLElement): Record<string, string> {
+  const params: Record<string, string> = {};
+  for (const [key, value] of Object.entries(element.dataset)) {
+    const name = /^track([A-Z]\w*)$/.exec(key)?.[1];
+    if (name && name !== "Event" && value !== undefined) params[name.charAt(0).toLowerCase() + name.slice(1)] = value;
   }
+  return params;
 }
-
-// sessionStorage can throw (private mode, blocked storage): tracking must never break the page
-const session = {
-  get(key: string) {
-    try {
-      return sessionStorage.getItem(key);
-    } catch {
-      return null;
-    }
-  },
-  set(key: string, value: string) {
-    try {
-      sessionStorage.setItem(key, value);
-    } catch {
-      /* ignore */
-    }
-  },
-};
 
 export function TrackClicks({ lang }: { lang: string }) {
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const debug = params.has("debug");
-    const source = params.get("utm_source");
-    if (source) session.set(SOURCE_KEY, source);
-
     const onTap = (event: MouseEvent) => {
-      const link = (event.target as Element | null)?.closest<HTMLAnchorElement>("a[data-app]");
-      if (!link) return;
-      const props = {
-        app: link.dataset.app ?? "",
-        cuisine: link.dataset.cuisine ?? "",
-        section: link.dataset.track ?? "",
-        source: session.get(SOURCE_KEY) ?? "direct",
-        lang,
-      };
-      window.plausible?.("App tap", { props });
-      if (debug) console.info("[track] App tap", props);
+      const element = (event.target as Element | null)?.closest<HTMLElement>("a[data-app], [data-track-event]");
+      if (!element) return;
+      if (element.dataset.app) {
+        track("app_tap", { app: element.dataset.app, cuisine: element.dataset.cuisine ?? "", section: element.dataset.track ?? "", lang });
+      } else if (element.dataset.trackEvent) {
+        track(element.dataset.trackEvent, { ...trackParams(element), lang });
+      }
     };
     document.addEventListener("click", onTap);
     return () => document.removeEventListener("click", onTap);

@@ -1,0 +1,69 @@
+/* cookie consent card (ConsentBanner): a bottom sheet on phones, bottom right on desktop */
+/* Consent first: it is in view on load, even over the hero order buttons on short phones, and it sits above the
+   order bar (z-index 50) until a choice is made. Paper on the dark page, so it reads as a question, not as
+   page content. */
+@use "@/app/styles/breakpoints" as bp;
+
+@layer overlays {
+  .root {
+    position: fixed;
+    right: .75rem;
+    bottom: calc(.75rem + env(safe-area-inset-bottom));
+    left: .75rem;
+    z-index: 60;
+    display: grid;
+    gap: .75rem;
+    padding: 1rem;
+    border-radius: var(--radius-card);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    box-shadow: 0 .5rem 1.5rem #0006;
+
+    /* the global paper focus ring would vanish on the card */
+    :focus-visible {
+      outline-color: var(--color-ink);
+    }
+
+    @include bp.from(tablet) {
+      right: 1.5rem;
+      bottom: 1.5rem;
+      left: auto;
+      width: 24rem;
+      padding: 1.25rem;
+    }
+  }
+
+  .text {
+    font-size: var(--text-fine);
+    line-height: 1.4;
+  }
+
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .5rem;
+  }
+
+  /* both choices: the same pill, same size; ink, since the default paper pill would vanish on the card */
+  .button {
+    min-height: var(--tap);
+    padding: 0 1rem;
+    background: var(--color-ink);
+    color: var(--color-paper);
+
+    &:hover {
+      background: var(--color-fire);
+      color: var(--color-ink);
+    }
+  }
+}
+
+@layer motion {
+  :global(.motion-ok) .root {
+    animation: consent-in var(--motion-base) var(--ease-out-expo) both;
+  }
+
+  @keyframes consent-in {
+    from { opacity: 0; transform: translateY(.75rem); }
+  }
+}

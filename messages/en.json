@@ -135,6 +135,14 @@
     },
     "done": "Done. Confirm the link in the e-mail we just sent, and the code arrives right after."
   },
+  "consent": {
+    "title": "Cookies and visit statistics",
+    "text": "We'd like to know where you come from and what catches your eye, so we can improve the site. We use Google Analytics and its cookies for that, but only if you allow it.",
+    "privacy": "Privacy policy",
+    "accept": "Accept",
+    "reject": "Reject",
+    "settings": "Cookie settings"
+  },
   "footer": {
     "office": "Office orders",
     "follow": "Follow us",

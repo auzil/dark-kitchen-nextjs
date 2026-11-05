@@ -9,6 +9,7 @@ import { useActionState, useEffect, useRef, useState, type FormEvent } from "rea
 import { signup } from "@/app/actions/signup";
 import { Button } from "@/components/ui/Button/Button";
 import { Checkbox, FieldError, FieldLabel, TextInput } from "@/components/ui/Field/Field";
+import { track } from "@/lib/analytics";
 import { initialSignupState, SIGNUP_FIELDS, type SignupField } from "@/lib/signup/schema";
 import styles from "./SignupForm.module.scss";
 
@@ -38,8 +39,10 @@ export function SignupForm({ copy, locale }: { copy: SignupCopy; locale: string 
   }, []);
 
   useEffect(() => {
-    if (state.status === "ok") successRef.current?.focus();
-  }, [state]);
+    if (state.status !== "ok") return;
+    successRef.current?.focus();
+    track("generate_lead", { lang: locale });
+  }, [state, locale]);
 
   const done = state.status === "ok";
   const errors: Errors = clientErrors ?? (state.status === "error" ? state.fieldErrors : {});

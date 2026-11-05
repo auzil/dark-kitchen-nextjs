@@ -135,6 +135,14 @@
     },
     "done": "Hotovo. Potvrď odkaz v e-mailu, který jsme ti poslali, a kód dorazí hned potom."
   },
+  "consent": {
+    "title": "Soubory cookie a měření návštěvnosti",
+    "text": "Chceme vědět, odkud k nám chodíš a co tě zaujme, abychom web zlepšovali. K tomu používáme Google Analytics a jeho cookies, ale jen když to dovolíš.",
+    "privacy": "Ochrana osobních údajů",
+    "accept": "Povolit",
+    "reject": "Odmítnout",
+    "settings": "Nastavení cookies"
+  },
   "footer": {
     "office": "Firemní objednávky",
     "follow": "Sleduj nás",

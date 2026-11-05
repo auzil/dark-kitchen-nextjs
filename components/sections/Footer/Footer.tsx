@@ -1,8 +1,10 @@
-// Footer: office contacts, socials, operator details, privacy link, languages. Server component.
+// Footer: office contacts, socials, operator details, privacy link, cookie settings, languages. Server component.
 import { getTranslations } from "next-intl/server";
+import { CookieSettings } from "@/components/analytics/CookieSettings";
 import { LangSwitch } from "@/components/ui/LangSwitch/LangSwitch";
 import { Wordmark } from "@/components/ui/Wordmark/Wordmark";
 import type { Locale } from "@/i18n/routing";
+import { GA_ID } from "@/lib/analytics";
 import { fields, links } from "@/lib/fields";
 import styles from "./Footer.module.scss";
 
@@ -21,10 +23,14 @@ export async function Footer({ locale }: { locale: Locale }) {
             <h2>{t("footer.office")}</h2>
             <ul role="list" data-sample="true">
               <li>
-                <a href={links.phone}>{f.phone}</a>
+                <a href={links.phone} data-track-event="contact_tap" data-track-method="phone" data-track-section="footer">
+                  {f.phone}
+                </a>
               </li>
               <li>
-                <a href={links.email}>{f.email}</a>
+                <a href={links.email} data-track-event="contact_tap" data-track-method="email" data-track-section="footer">
+                  {f.email}
+                </a>
               </li>
             </ul>
           </div>
@@ -32,10 +38,14 @@ export async function Footer({ locale }: { locale: Locale }) {
             <h2>{t("footer.follow")}</h2>
             <ul role="list" data-sample="true">
               <li>
-                <a href={links.instagram}>Instagram</a>
+                <a href={links.instagram} data-track-event="social_tap" data-track-network="instagram">
+                  Instagram
+                </a>
               </li>
               <li>
-                <a href={links.tiktok}>TikTok</a>
+                <a href={links.tiktok} data-track-event="social_tap" data-track-network="tiktok">
+                  TikTok
+                </a>
               </li>
             </ul>
           </div>
@@ -51,6 +61,11 @@ export async function Footer({ locale }: { locale: Locale }) {
                   {t("footer.privacy")}
                 </a>
               </li>
+              {GA_ID && (
+                <li>
+                  <CookieSettings className={styles.cookies}>{t("consent.settings")}</CookieSettings>
+                </li>
+              )}
             </ul>
           </div>
           <div>

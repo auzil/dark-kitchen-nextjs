@@ -35,8 +35,16 @@ export async function Combos({ locale }: { locale: Locale }) {
         </ul>
         <p className={styles.office}>
           {t.rich("combos.office", {
-            phone: (chunks) => <a href={links.phone}>{chunks}</a>,
-            email: (chunks) => <a href={links.email}>{chunks}</a>,
+            phone: (chunks) => (
+              <a href={links.phone} data-track-event="contact_tap" data-track-method="phone" data-track-section="combos">
+                {chunks}
+              </a>
+            ),
+            email: (chunks) => (
+              <a href={links.email} data-track-event="contact_tap" data-track-method="email" data-track-section="combos">
+                {chunks}
+              </a>
+            ),
             phoneNumber: f.phone,
             emailAddress: f.email,
           })}
